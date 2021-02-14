@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Constants.DriveConstants;
@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @SuppressWarnings("PMD.ExcessiveImports")
@@ -75,6 +76,25 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearLeft.getState(),
         m_frontRight.getState(),
         m_rearRight.getState());
+
+    //Add values to smartdashborad
+    SmartDashboard.putNumber("Front Left Abs Angle", m_frontLeft.getModuleAbsoluteAngle());
+    SmartDashboard.putNumber("Front Left Angle", m_frontLeft.getModuleAngle());
+    SmartDashboard.putNumber("Front Right Abs Angle", m_frontRight.getModuleAbsoluteAngle());
+    SmartDashboard.putNumber("Front Right Angle", m_frontRight.getModuleAngle());
+    SmartDashboard.putNumber("Rear Left Abs Angle", m_rearLeft.getModuleAbsoluteAngle());
+    SmartDashboard.putNumber("Rear Left Angle", m_rearLeft.getModuleAngle());
+    SmartDashboard.putNumber("Rear Right Abs Angle", m_rearRight.getModuleAngle());
+    SmartDashboard.putNumber("Rear Right Angle", m_rearRight.getModuleAngle());
+
+    SmartDashboard.putNumber("Encoder Angle", getHeading());
+
+
+
+
+
+
+
   }
 
   /**
