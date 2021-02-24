@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -27,6 +28,7 @@ public class SwerveModule {
   private final CANEncoder m_driveEncoder;
 
   private final CANCoder m_turningEncoder;
+  //private final CANCoderConfiguration cancoderConfig;
 
   private final PIDController m_drivePIDController =
       new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
@@ -51,9 +53,9 @@ public class SwerveModule {
       int driveMotorChannel,
       int turningMotorChannel,
       int turningEncoderPort,
-      double angleZero, // This is the absolute angle of the module pointing forward 0deg
-      boolean driveEncoderReversed,
-      boolean turningEncoderReversed) {
+      double angleZero){//, // This is the absolute angle of the module pointing forward 0deg
+      //boolean driveEncoderReversed,
+      //boolean turningEncoderReversed) {
 
     moduleAngleZero = angleZero;
     moduleAngleOffset = moduleAngleZero; //This is for possible logic needed to adjust the zero to an offset angle
@@ -64,6 +66,11 @@ public class SwerveModule {
     this.m_driveEncoder = m_driveMotor.getEncoder();
 
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
+    //this.cancoderConfig = new CANCoderConfiguration();
+    //this.cancoderConfig.magnetOffsetDegrees= angleZero;
+    //this.m_turningEncoder.getAllConfigs(this.cancoderConfig);
+    this.m_turningEncoder.configMagnetOffset(-angleZero);
+
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -142,11 +149,19 @@ public class SwerveModule {
   }
 
   public double getModuleAbsoluteAngle(){
-     return m_turningEncoder.getAbsolutePosition() - 180;  //returns absolute module angle from -180 to 180
+     return m_turningEncoder.getAbsolutePosition();  //returns absolute module angle from 0 to 360
   }
   
   public double getModuleAngle(){
-    return getModuleAbsoluteAngle() + moduleAngleOffset;
+    double rawAngle = getModuleAbsoluteAngle();
+    double angle;
+    if (rawAngle > 180.0 && rawAngle < 360.0){
+      angle = -180 + rawAngle % 180.0;
+    }else{
+      angle = rawAngle;
+    }
+
+    return angle;
   }
 
   public double getModuleAngleRadians(){

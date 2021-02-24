@@ -23,33 +23,33 @@ public final class Constants {
     public static final int kFrontRightDriveMotorPort = 3;
     public static final int kRearRightDriveMotorPort = 4;
 
-    public static final int kFrontLeftTurningMotorPort = 5;
-    public static final int kRearLeftTurningMotorPort = 6;
-    public static final int kFrontRightTurningMotorPort = 7;
-    public static final int kRearRightTurningMotorPort = 8;
+    public static final int kFrontLeftTurningMotorPort = 21;
+    public static final int kRearLeftTurningMotorPort = 22;
+    public static final int kFrontRightTurningMotorPort = 23;
+    public static final int kRearRightTurningMotorPort = 24;
 
     public static final int kFrontLeftTurningEncoderPort = 11;
     public static final int kRearLeftTurningEncoderPort = 12;
     public static final int kFrontRightTurningEncoderPort = 13;
     public static final int kRearRightTurningEncoderPort = 14;
 
-    public static final int kFrontLeftAngleZero = 0;
-    public static final int kRearLeftAngleZero = 0;
-    public static final int kFrontRightAngleZero = 0;
-    public static final int kRearRightAngleZero = 0;
+    public static final double kFrontLeftAngleZero = 353.9;
+    public static final double kRearLeftAngleZero = 130.6;
+    public static final double kFrontRightAngleZero = 245.6;
+    public static final double kRearRightAngleZero = 180.7;
 
 
-    public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kRearLeftTurningEncoderReversed = true;
-    public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kRearRightTurningEncoderReversed = true;
+    //public static final boolean kFrontLeftTurningEncoderReversed = false;
+    //public static final boolean kRearLeftTurningEncoderReversed = true;
+    //public static final boolean kFrontRightTurningEncoderReversed = false;
+    //public static final boolean kRearRightTurningEncoderReversed = true;
 
 
 
-    public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kRearLeftDriveEncoderReversed = true;
-    public static final boolean kFrontRightDriveEncoderReversed = false;
-    public static final boolean kRearRightDriveEncoderReversed = true;
+    //public static final boolean kFrontLeftDriveEncoderReversed = false;
+    //public static final boolean kRearLeftDriveEncoderReversed = true;
+    //public static final boolean kFrontRightDriveEncoderReversed = false;
+    //public static final boolean kRearRightDriveEncoderReversed = true;
 
     public static final double kTrackWidth = 25 * 0.0254;
     // Distance between centers of right and left wheels on robot
@@ -90,9 +90,9 @@ public final class Constants {
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
         (2 * Math.PI) / (double) kEncoderCPR;
 
-    public static final double kPModuleTurningController = 1;
+    public static final double kPModuleTurningController = 0.4;//1
 
-    public static final double kPModuleDriveController = 1;
+    public static final double kPModuleDriveController = 0.02;//1
   }
 
   public static final class OIConstants {

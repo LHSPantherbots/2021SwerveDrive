@@ -26,36 +26,28 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.kFrontLeftDriveMotorPort,
           DriveConstants.kFrontLeftTurningMotorPort,
           DriveConstants.kFrontLeftTurningEncoderPort,
-          DriveConstants.kFrontLeftAngleZero,
-          DriveConstants.kFrontLeftDriveEncoderReversed,
-          DriveConstants.kFrontLeftTurningEncoderReversed);
+          DriveConstants.kFrontLeftAngleZero);
 
   private final SwerveModule m_rearLeft =
       new SwerveModule(
           DriveConstants.kRearLeftDriveMotorPort,
           DriveConstants.kRearLeftTurningMotorPort,
           DriveConstants.kRearLeftTurningEncoderPort,
-          DriveConstants.kRearLeftAngleZero,
-          DriveConstants.kRearLeftDriveEncoderReversed,
-          DriveConstants.kRearLeftTurningEncoderReversed);
+          DriveConstants.kRearLeftAngleZero);
 
   private final SwerveModule m_frontRight =
       new SwerveModule(
           DriveConstants.kFrontRightDriveMotorPort,
           DriveConstants.kFrontRightTurningMotorPort,
           DriveConstants.kFrontRightTurningEncoderPort,
-          DriveConstants.kFrontRightAngleZero,
-          DriveConstants.kFrontRightDriveEncoderReversed,
-          DriveConstants.kFrontRightTurningEncoderReversed);
+          DriveConstants.kFrontRightAngleZero);
 
   private final SwerveModule m_rearRight =
       new SwerveModule(
           DriveConstants.kRearRightDriveMotorPort,
           DriveConstants.kRearRightTurningMotorPort,
           DriveConstants.kRearRightTurningEncoderPort,
-          DriveConstants.kRearRightAngleZero,
-          DriveConstants.kRearRightDriveEncoderReversed,
-          DriveConstants.kRearRightTurningEncoderReversed);
+          DriveConstants.kRearRightAngleZero);
 
   // The gyro sensor
   private final Gyro m_gyro = new ADXRS450_Gyro();
@@ -84,10 +76,18 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Right Angle", m_frontRight.getModuleAngle());
     SmartDashboard.putNumber("Rear Left Abs Angle", m_rearLeft.getModuleAbsoluteAngle());
     SmartDashboard.putNumber("Rear Left Angle", m_rearLeft.getModuleAngle());
-    SmartDashboard.putNumber("Rear Right Abs Angle", m_rearRight.getModuleAngle());
+    SmartDashboard.putNumber("Rear Right Abs Angle", m_rearRight.getModuleAbsoluteAngle());
     SmartDashboard.putNumber("Rear Right Angle", m_rearRight.getModuleAngle());
+    SmartDashboard.putNumber("Front Left Position", m_frontLeft.getDriveEncoderPosition());
+    SmartDashboard.putNumber("Rear Left Position", m_rearLeft.getDriveEncoderPosition());
+    SmartDashboard.putNumber("Front Right Position", m_frontRight.getDriveEncoderPosition());
+    SmartDashboard.putNumber("Rear Right Position", m_rearRight.getDriveEncoderPosition());
 
-    SmartDashboard.putNumber("Encoder Angle", getHeading());
+
+
+
+
+    SmartDashboard.putNumber("Gyro Angle", getHeading());
 
 
 
@@ -182,4 +182,7 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+
+
 }
