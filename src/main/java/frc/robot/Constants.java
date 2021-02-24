@@ -84,7 +84,7 @@ public final class Constants {
     public static final double driveGearReduction = 50/14 * 16/28 * 60/15; //Gear tooth counts train on MK3 swerve module
     public static final double kWheelDiameterMeters = 6 * .0254; //6" wheel
     public static final double kDriveEncoderDistancePerPulse =
-        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR *driveGearReduction; //converts motor rpm to meters wheel traveled
+        (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR *driveGearReduction); //converts motor rpm to meters wheel traveled
 
     public static final double kTurningEncoderDistancePerPulse =
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
