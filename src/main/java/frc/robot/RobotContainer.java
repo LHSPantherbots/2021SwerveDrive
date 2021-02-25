@@ -50,10 +50,10 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_driverController.getY(GenericHID.Hand.kLeft),
-                    m_driverController.getX(GenericHID.Hand.kRight),
-                    m_driverController.getX(GenericHID.Hand.kLeft),
-                    false), m_robotDrive));
+                    -m_driverController.getY(GenericHID.Hand.kLeft),
+                    -m_driverController.getX(GenericHID.Hand.kLeft),
+                    -m_driverController.getX(GenericHID.Hand.kRight),
+                    true), m_robotDrive));
   }
 
   /**
@@ -111,6 +111,6 @@ public class RobotContainer {
     m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

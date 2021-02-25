@@ -92,7 +92,7 @@ public final class Constants {
 
     public static final double kPModuleTurningController = 0.4;//1
 
-    public static final double kPModuleDriveController = 0.02;//1
+    public static final double kPModuleDriveController = 0.2;//1
   }
 
   public static final class OIConstants {
