@@ -12,6 +12,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SwerveModule;
+import frc.robot.subsystems.TestModuleSubsystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -33,7 +35,8 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  //private final TestModuleSubsystem test_module = new TestModuleSubsystem();
+ 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -52,8 +55,22 @@ public class RobotContainer {
                 m_robotDrive.drive(
                     -m_driverController.getY(GenericHID.Hand.kLeft),
                     -m_driverController.getX(GenericHID.Hand.kLeft),
-                    -m_driverController.getX(GenericHID.Hand.kRight),
+                    -m_driverController.getRawAxis(2),
+                    
                     true), m_robotDrive));
+    // test_module.setDefaultCommand(
+    //   new RunCommand(
+    //       () ->
+    //          test_module.drive(
+    //             -m_driverController.getY(GenericHID.Hand.kLeft),
+    //             -m_driverController.getX(GenericHID.Hand.kLeft),
+    //             -m_driverController.getX(GenericHID.Hand.kRight),
+    //             true),
+    //             test_module
+    //          ));
+
+    
+
   }
 
   /**
@@ -62,55 +79,55 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics);
+//   public Command getAutonomousCommand() {
+//     // Create config for trajectory
+//     TrajectoryConfig config =
+//         new TrajectoryConfig(
+//                 AutoConstants.kMaxSpeedMetersPerSecond,
+//                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+//             // Add kinematics to ensure max speed is actually obeyed
+//             .setKinematics(DriveConstants.kDriveKinematics);
 
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            config);
+//     // An example trajectory to follow.  All units in meters.
+//     Trajectory exampleTrajectory =
+//         TrajectoryGenerator.generateTrajectory(
+//             // Start at the origin facing the +X direction
+//             new Pose2d(0, 0, new Rotation2d(0)),
+//             // Pass through these two interior waypoints, making an 's' curve path
+//             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+//             // End 3 meters straight ahead of where we started, facing forward
+//             new Pose2d(3, 0, new Rotation2d(0)),
+//             config);
 
-    var thetaController =
-        new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+//     var thetaController =
+//         new ProfiledPIDController(
+//             AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+//     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            exampleTrajectory,
-            m_robotDrive::getPose, // Functional interface to feed supplier
-            DriveConstants.kDriveKinematics,
+    // SwerveControllerCommand swerveControllerCommand =
+    //     new SwerveControllerCommand(
+    //         exampleTrajectory,
+    //         m_robotDrive::getPose, // Functional interface to feed supplier
+    //         DriveConstants.kDriveKinematics,
 
-            // Position controllers
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0),
-            thetaController,
-            m_robotDrive::setModuleStates,
-            m_robotDrive);
+    //         // Position controllers
+    //         new PIDController(AutoConstants.kPXController, 0, 0),
+    //         new PIDController(AutoConstants.kPYController, 0, 0),
+    //         thetaController,
+    //         m_robotDrive::setModuleStates,
+    //         m_robotDrive);
 
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    // // Reset odometry to the starting pose of the trajectory.
+    // m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
-    // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    // // Run path following command, then stop at the end.
+    // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

@@ -51,9 +51,9 @@ public final class Constants {
     //public static final boolean kFrontRightDriveEncoderReversed = false;
     //public static final boolean kRearRightDriveEncoderReversed = true;
 
-    public static final double kTrackWidth = 25 * 0.0254;
+    public static final double kTrackWidth = 18.5 * 0.0254;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 25 * 0.0254;
+    public static final double kWheelBase = 18.5 * 0.0254;
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
@@ -77,12 +77,12 @@ public final class Constants {
   }
 
   public static final class ModuleConstants {
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2* 2 * Math.PI;
+    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2* 2 * Math.PI;
 
     public static final double kEncoderCPR = 1.0; //default unit for spark max distance is 1 revolution
-    public static final double driveGearReduction = 50/14 * 16/28 * 60/15; //Gear tooth counts train on MK3 swerve module
-    public static final double kWheelDiameterMeters = 6 * .0254; //6" wheel
+    public static final double driveGearReduction = 50.0/14.0 * 16.0/28.0 * 60.0/15.0; //Gear tooth counts train on MK3 swerve module
+    public static final double kWheelDiameterMeters = 4 * .0254; //6" wheel
     public static final double kDriveEncoderDistancePerPulse =
         (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR *driveGearReduction); //converts motor rpm to meters wheel traveled
 

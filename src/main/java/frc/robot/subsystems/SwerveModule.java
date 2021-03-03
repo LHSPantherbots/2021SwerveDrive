@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -26,6 +28,10 @@ public class SwerveModule {
   private final CANSparkMax m_turningMotor;
 
   private final CANEncoder m_driveEncoder;
+
+  private CANPIDController m_drivePidController;
+
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
 
   private final CANCoder m_turningEncoder;
   //private final CANCoderConfiguration cancoderConfig;
@@ -63,6 +69,13 @@ public class SwerveModule {
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
 
+    m_driveMotor.restoreFactoryDefaults();
+    m_turningMotor.restoreFactoryDefaults();
+
+    // initialze PID controller and encoder objects
+    m_drivePidController = m_driveMotor.getPIDController();
+
+
     this.m_driveEncoder = m_driveMotor.getEncoder();
 
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
@@ -70,6 +83,36 @@ public class SwerveModule {
     //this.cancoderConfig.magnetOffsetDegrees= angleZero;
     //this.m_turningEncoder.getAllConfigs(this.cancoderConfig);
     this.m_turningEncoder.configMagnetOffset(-angleZero);
+
+
+        // PID coefficients
+        kP = 5e-5; 
+        kI = 1e-6;
+        kD = 0; 
+        kIz = 0; 
+        kFF = 0.000156; 
+        kMaxOutput = 1; 
+        kMinOutput = -1;
+        maxRPM = 5700;
+    
+        // Smart Motion Coefficients
+        maxVel = 5700; // rpm
+        maxAcc = 3000;
+    
+        // set PID coefficients
+        m_drivePidController.setP(kP);
+        m_drivePidController.setI(kI);
+        m_drivePidController.setD(kD);
+        m_drivePidController.setIZone(kIz);
+        m_drivePidController.setFF(kFF);
+        m_drivePidController.setOutputRange(kMinOutput, kMaxOutput);
+
+        int smartMotionSlot = 0;
+        m_drivePidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+        m_drivePidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+        m_drivePidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+        m_drivePidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+
 
 
     // Set the distance per pulse for the drive encoder. We can simply use the
@@ -91,6 +134,7 @@ public class SwerveModule {
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    resetEncoders();
   }
 
   /**
@@ -117,8 +161,18 @@ public class SwerveModule {
         m_turningPIDController.calculate(getModuleAngleRadians(), state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(driveOutput);
+    //m_driveMotor.set(driveOutput);
+    if (state.speedMetersPerSecond>0.05){
+        m_drivePidController.setReference(state.speedMetersPerSecond*maxVel, ControlType.kSmartVelocity);
+    }else{
+        m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
+    }
     m_turningMotor.set(turnOutput);
+  }
+
+  public void manualDrive(double drive, double turn){
+    m_driveMotor.set(drive);
+    m_turningMotor.set(turn);
   }
 
   /** Zeros all the SwerveModule encoders. */
