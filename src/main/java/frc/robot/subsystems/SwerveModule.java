@@ -152,9 +152,9 @@ public class SwerveModule {
    * @param state Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState state) {
-
+    //System.out.println("Original State: " + state.toString());
     state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
-
+    //System.out.println("Optimized State: " + state.toString());
     // Calculate the drive output from the drive PID controller.
     //final var driveOutput =
     //    m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
@@ -165,7 +165,7 @@ public class SwerveModule {
 
     // Calculate the turning motor output from the turning PID controller.
     //m_driveMotor.set(driveOutput);
-    if (state.speedMetersPerSecond>0.05){
+    if (Math.abs(state.speedMetersPerSecond)>0.05){
         m_drivePidController.setReference(state.speedMetersPerSecond*maxVel, ControlType.kSmartVelocity);
     }else{
         m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
