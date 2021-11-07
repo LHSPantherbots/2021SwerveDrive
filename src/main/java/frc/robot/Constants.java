@@ -77,8 +77,8 @@ public final class Constants {
   }
 
   public static final class ModuleConstants {
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2* 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2* 2 * Math.PI;
+    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 20* 2 * Math.PI;
+    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 20* 2 * Math.PI;
 
     public static final double kEncoderCPR = 1.0; //default unit for spark max distance is 1 revolution
     public static final double driveGearReduction = 50.0/14.0 * 16.0/28.0 * 60.0/15.0; //Gear tooth counts train on MK3 swerve module
@@ -96,7 +96,7 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 1;
+    public static final int kDriverControllerPort = 0;
   }
 
   public static final class AutoConstants {

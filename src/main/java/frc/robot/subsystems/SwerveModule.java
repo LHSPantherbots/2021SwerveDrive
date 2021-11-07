@@ -152,9 +152,12 @@ public class SwerveModule {
    * @param state Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState state) {
+
+    state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
+
     // Calculate the drive output from the drive PID controller.
-    final var driveOutput =
-        m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
+    //final var driveOutput =
+    //    m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =

@@ -83,7 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Right Position", m_frontRight.getDriveEncoderPosition());
     SmartDashboard.putNumber("Rear Right Position", m_rearRight.getDriveEncoderPosition());
 
-    
+    SmartDashboard.putString("FR State", m_frontRight.getState().toString());
     SmartDashboard.putNumber("Front Right Encoder Distance", m_frontRight.getDriveEncoderPositionMeter());
     SmartDashboard.putNumber("Front Right Encoder Speed Meter/s", m_frontRight.getDriveEncoderVelocityMeterPerSec());
 
@@ -135,6 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.normalizeWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+  
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
