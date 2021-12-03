@@ -82,7 +82,7 @@ public final class Constants {
 
     public static final double kEncoderCPR = 1.0; //default unit for spark max distance is 1 revolution
     public static final double driveGearReduction = 50.0/14.0 * 16.0/28.0 * 60.0/15.0; //Gear tooth counts train on MK3 swerve module
-    public static final double kWheelDiameterMeters = 4 * .0254; //6" wheel
+    public static final double kWheelDiameterMeters = 4 * .0254; //4" wheel
     public static final double kDriveEncoderDistancePerPulse =
         (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR *driveGearReduction); //converts motor rpm to meters wheel traveled
 
@@ -100,8 +100,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
