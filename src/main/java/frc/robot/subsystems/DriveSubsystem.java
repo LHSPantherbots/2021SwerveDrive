@@ -82,8 +82,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Rear Left Position", m_rearLeft.getDriveEncoderPosition());
     SmartDashboard.putNumber("Front Right Position", m_frontRight.getDriveEncoderPosition());
     SmartDashboard.putNumber("Rear Right Position", m_rearRight.getDriveEncoderPosition());
+    //SmartDashboard.putNumber("FR Drive Set", m_frontLeft.)
+    SmartDashboard.putString("FR Actual State", m_frontRight.getState().toString());
 
-    SmartDashboard.putString("FR State", m_frontRight.getState().toString());
     SmartDashboard.putNumber("Front Right Encoder Distance", m_frontRight.getDriveEncoderPositionMeter());
     SmartDashboard.putNumber("Front Right Encoder Speed Meter/s", m_frontRight.getDriveEncoderVelocityMeterPerSec());
 
@@ -138,6 +139,7 @@ public class DriveSubsystem extends SubsystemBase {
   
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
+    SmartDashboard.putString("FR2 Set State", swerveModuleStates[1].toString());
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
@@ -152,6 +154,7 @@ public class DriveSubsystem extends SubsystemBase {
         desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(desiredStates[0]);
     m_frontRight.setDesiredState(desiredStates[1]);
+    SmartDashboard.putString("FR Set State", desiredStates[1].toString());
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
   }

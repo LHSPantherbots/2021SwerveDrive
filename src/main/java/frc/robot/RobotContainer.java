@@ -39,8 +39,8 @@ public class RobotContainer {
   //private final TestModuleSubsystem test_module = new TestModuleSubsystem();
  
   // The driver's controller
-  //XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
+  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  //Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -57,7 +57,7 @@ public class RobotContainer {
                 m_robotDrive.drive(
                     -m_driverController.getY(GenericHID.Hand.kLeft),
                     -m_driverController.getX(GenericHID.Hand.kLeft),
-                    -m_driverController.getRawAxis(2),
+                    -m_driverController.getX(GenericHID.Hand.kRight),
                     
                     true), m_robotDrive));
     // test_module.setDefaultCommand(
@@ -103,9 +103,10 @@ public class RobotContainer {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1/3, 0), new Translation2d(2/3, 0)),
+            List.of(new Translation2d(3, 0), 
+                  new Translation2d(6, 0)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3/3, 0, new Rotation2d(0)),
+            new Pose2d(10, 0, new Rotation2d(0)),
             config);
 
     var thetaController =

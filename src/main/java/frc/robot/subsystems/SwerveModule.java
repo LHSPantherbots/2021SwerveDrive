@@ -86,11 +86,11 @@ public class SwerveModule {
 
 
         // PID coefficients
-        kP = 5e-5; 
-        kI = 1e-6;
+        kP = 0.0002;//5e-5; 
+        kI = 0.0;//1e-6;
         kD = 0; 
         kIz = 0; 
-        kFF = 0.000156; 
+        kFF = 0.000156;//0.000156; 
         kMaxOutput = 1; 
         kMinOutput = -1;
         maxRPM = 5700;
@@ -165,8 +165,10 @@ public class SwerveModule {
 
     // Calculate the turning motor output from the turning PID controller.
     //m_driveMotor.set(driveOutput);
+    double motorRpm = getMotorRpmFromDriveVelocity(state.speedMetersPerSecond);
     if (Math.abs(state.speedMetersPerSecond)>0.05){
-        m_drivePidController.setReference(state.speedMetersPerSecond*maxVel, ControlType.kSmartVelocity);
+        m_drivePidController.setReference(motorRpm, ControlType.kSmartVelocity);
+        //m_drivePidController.setReference(state.speedMetersPerSecond*0, ControlType.kSmartVelocity);
     }else{
         m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
     }
@@ -200,6 +202,12 @@ public class SwerveModule {
   public double getDriveEncoderPositionMeter(){
     return m_driveEncoder.getPosition() * ModuleConstants.kDriveEncoderDistancePerPulse ;
   }
+
+  public double getMotorRpmFromDriveVelocity(double velocity){
+
+    return velocity * 60 / ModuleConstants.kDriveEncoderDistancePerPulse;
+  }
+
 
   public double getDriveEncoderVelocityMeterPerSec(){
     return getDriveEncoderVelocity() * ModuleConstants.kDriveEncoderDistancePerPulse / 60; //converts rpm to meters/second

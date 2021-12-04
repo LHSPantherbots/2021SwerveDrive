@@ -69,9 +69,9 @@ public final class Constants {
     // for *your* robot's drive.
     // The RobotPy Characterization Toolsuite provides a convenient tool for obtaining these
     // values for your robot.
-    public static final double ksVolts = 1;
-    public static final double kvVoltSecondsPerMeter = 0.8;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.15;
+    public static final double ksVolts = 0.0978;
+    public static final double kvVoltSecondsPerMeter = 3.16;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.274;
 
     public static final double kMaxSpeedMetersPerSecond = 3;
   }
@@ -92,7 +92,7 @@ public final class Constants {
 
     public static final double kPModuleTurningController = 0.4;//1
 
-    public static final double kPModuleDriveController = 0.2;//1
+    public static final double kPModuleDriveController = 0.02;//1
   }
 
   public static final class OIConstants {
@@ -100,7 +100,7 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxSpeedMetersPerSecond = 3.0;//1;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
