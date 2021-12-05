@@ -35,12 +35,14 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   //private final TestModuleSubsystem test_module = new TestModuleSubsystem();
  
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   //Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
+  private final Command justMove = new RunCommand(()-> m_robotDrive.drive(0.0, 1.0, 0.0, true)).withTimeout(3.0);
+ 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -89,6 +91,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    //return justMove;
+    Pose2d pose = new Pose2d();
+    m_robotDrive.resetOdometry(pose);
     // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
@@ -103,10 +108,10 @@ public class RobotContainer {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(3, 0), 
-                  new Translation2d(6, 0)),
+            List.of(new Translation2d(1.0, 1.0), 
+                  new Translation2d(2.0, 1.0)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(10, 0, new Rotation2d(0)),
+            new Pose2d(2.0, 0, new Rotation2d(0)),
             config);
 
     var thetaController =

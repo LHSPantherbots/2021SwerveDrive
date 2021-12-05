@@ -65,23 +65,28 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(
         new Rotation2d(getHeading()),
         m_frontLeft.getState(),
-        m_rearLeft.getState(),
         m_frontRight.getState(),
+        m_rearLeft.getState(),
         m_rearRight.getState());
 
     //Add values to smartdashborad
-    SmartDashboard.putNumber("Front Left Abs Angle", m_frontLeft.getModuleAbsoluteAngle());
+    // SmartDashboard.putNumber("Front Left Abs Angle", m_frontLeft.getModuleAbsoluteAngle());
     SmartDashboard.putNumber("Front Left Angle", m_frontLeft.getModuleAngle());
-    SmartDashboard.putNumber("Front Right Abs Angle", m_frontRight.getModuleAbsoluteAngle());
+    // SmartDashboard.putNumber("Front Right Abs Angle", m_frontRight.getModuleAbsoluteAngle());
     SmartDashboard.putNumber("Front Right Angle", m_frontRight.getModuleAngle());
-    SmartDashboard.putNumber("Rear Left Abs Angle", m_rearLeft.getModuleAbsoluteAngle());
+    // SmartDashboard.putNumber("Rear Left Abs Angle", m_rearLeft.getModuleAbsoluteAngle());
     SmartDashboard.putNumber("Rear Left Angle", m_rearLeft.getModuleAngle());
-    SmartDashboard.putNumber("Rear Right Abs Angle", m_rearRight.getModuleAbsoluteAngle());
+    // SmartDashboard.putNumber("Rear Right Abs Angle", m_rearRight.getModuleAbsoluteAngle());
     SmartDashboard.putNumber("Rear Right Angle", m_rearRight.getModuleAngle());
-    SmartDashboard.putNumber("Front Left Position", m_frontLeft.getDriveEncoderPosition());
-    SmartDashboard.putNumber("Rear Left Position", m_rearLeft.getDriveEncoderPosition());
-    SmartDashboard.putNumber("Front Right Position", m_frontRight.getDriveEncoderPosition());
-    SmartDashboard.putNumber("Rear Right Position", m_rearRight.getDriveEncoderPosition());
+    // SmartDashboard.putNumber("Front Left Position", m_frontLeft.getDriveEncoderPosition());
+    // SmartDashboard.putNumber("Rear Left Position", m_rearLeft.getDriveEncoderPosition());
+    // SmartDashboard.putNumber("Front Right Position", m_frontRight.getDriveEncoderPosition());
+    // SmartDashboard.putNumber("Rear Right Position", m_rearRight.getDriveEncoderPosition());
+    SmartDashboard.putNumber("Front Left Pos, m", m_frontLeft.getDriveEncoderPositionMeter());
+    SmartDashboard.putNumber("Front Right Pos, m", m_frontRight.getDriveEncoderPositionMeter());
+    SmartDashboard.putNumber("Back Left Pos, m", m_rearLeft.getDriveEncoderPositionMeter());
+    SmartDashboard.putNumber("Back Right Pos, m", m_rearRight.getDriveEncoderPositionMeter());
+
     //SmartDashboard.putNumber("FR Drive Set", m_frontLeft.)
     SmartDashboard.putString("FR Actual State", m_frontRight.getState().toString());
 
@@ -92,7 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     SmartDashboard.putNumber("Gyro Angle", getHeading());
-
+    SmartDashboard.putString("Pose", getPose().toString());
 
 
 
@@ -162,8 +167,8 @@ public class DriveSubsystem extends SubsystemBase {
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
     m_frontLeft.resetEncoders();
-    m_rearLeft.resetEncoders();
     m_frontRight.resetEncoders();
+    m_rearLeft.resetEncoders();
     m_rearRight.resetEncoders();
   }
 

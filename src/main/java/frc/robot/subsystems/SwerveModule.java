@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
@@ -38,6 +40,9 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController =
       new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
+
+  //private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter);
+  private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward( 0.0, 0.26);
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
   private final ProfiledPIDController m_turningPIDController =
@@ -84,36 +89,38 @@ public class SwerveModule {
     //this.m_turningEncoder.getAllConfigs(this.cancoderConfig);
     this.m_turningEncoder.configMagnetOffset(-angleZero);
 
+//*********************************************** */
 
+//*
         // PID coefficients
-        kP = 0.0002;//5e-5; 
-        kI = 0.0;//1e-6;
-        kD = 0; 
-        kIz = 0; 
-        kFF = 0.000156;//0.000156; 
-        kMaxOutput = 1; 
-        kMinOutput = -1;
-        maxRPM = 5700;
+        // kP = 0.0002;//5e-5; 
+        // kI = 0.0;//1e-6;
+        // kD = 0; 
+        // kIz = 0; 
+        // kFF = 0.000156;//0.000156; 
+        // kMaxOutput = 1; 
+        // kMinOutput = -1;
+        // maxRPM = 5700;
     
-        // Smart Motion Coefficients
-        maxVel = 5700; // rpm
-        maxAcc = 3000;
+        // // Smart Motion Coefficients
+        // maxVel = 5700; // rpm
+        // maxAcc = 3000;
     
-        // set PID coefficients
-        m_drivePidController.setP(kP);
-        m_drivePidController.setI(kI);
-        m_drivePidController.setD(kD);
-        m_drivePidController.setIZone(kIz);
-        m_drivePidController.setFF(kFF);
-        m_drivePidController.setOutputRange(kMinOutput, kMaxOutput);
+        // // set PID coefficients
+        // m_drivePidController.setP(kP);
+        // m_drivePidController.setI(kI);
+        // m_drivePidController.setD(kD);
+        // m_drivePidController.setIZone(kIz);
+        // m_drivePidController.setFF(kFF);
+        // m_drivePidController.setOutputRange(kMinOutput, kMaxOutput);
 
-        int smartMotionSlot = 0;
-        m_drivePidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-        m_drivePidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-        m_drivePidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-        m_drivePidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+        // int smartMotionSlot = 0;
+        // m_drivePidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+        // m_drivePidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+        // m_drivePidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+        // m_drivePidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-
+//************************************************************** */
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -153,25 +160,31 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState state) {
     //System.out.println("Original State: " + state.toString());
-    state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
+    //state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
     //System.out.println("Optimized State: " + state.toString());
     // Calculate the drive output from the drive PID controller.
-    //final var driveOutput =
-    //    m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
+    final var driveOutput =
+        driveFeedforward.calculate(state.speedMetersPerSecond) +
+        m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getModuleAngleRadians(), state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
-    //m_driveMotor.set(driveOutput);
+    m_driveMotor.set(driveOutput);
     double motorRpm = getMotorRpmFromDriveVelocity(state.speedMetersPerSecond);
-    if (Math.abs(state.speedMetersPerSecond)>0.05){
-        m_drivePidController.setReference(motorRpm, ControlType.kSmartVelocity);
-        //m_drivePidController.setReference(state.speedMetersPerSecond*0, ControlType.kSmartVelocity);
-    }else{
-        m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
-    }
+
+//************ */
+
+    // if (Math.abs(state.speedMetersPerSecond)>0.05){
+    //     m_drivePidController.setReference(motorRpm, ControlType.kSmartVelocity);
+    //     //m_drivePidController.setReference(state.speedMetersPerSecond*0, ControlType.kSmartVelocity);
+    // }else{
+    //     m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
+    // }
+
+  //**************************** */
     m_turningMotor.set(turnOutput);
   }
 
