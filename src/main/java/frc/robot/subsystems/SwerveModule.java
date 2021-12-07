@@ -93,32 +93,32 @@ public class SwerveModule {
 
 //*
         // PID coefficients
-        // kP = 0.0002;//5e-5; 
-        // kI = 0.0;//1e-6;
-        // kD = 0; 
-        // kIz = 0; 
-        // kFF = 0.000156;//0.000156; 
-        // kMaxOutput = 1; 
-        // kMinOutput = -1;
-        // maxRPM = 5700;
+        kP = 0.0002;//5e-5; 
+        kI = 0.0;//1e-6;
+        kD = 0; 
+        kIz = 0; 
+        kFF = 0.000156;//0.000156; 
+        kMaxOutput = 1; 
+        kMinOutput = -1;
+        maxRPM = 5700;
     
-        // // Smart Motion Coefficients
-        // maxVel = 5700; // rpm
-        // maxAcc = 3000;
+        // Smart Motion Coefficients
+        maxVel = 5700; // rpm
+        maxAcc = 3000;
     
-        // // set PID coefficients
-        // m_drivePidController.setP(kP);
-        // m_drivePidController.setI(kI);
-        // m_drivePidController.setD(kD);
-        // m_drivePidController.setIZone(kIz);
-        // m_drivePidController.setFF(kFF);
-        // m_drivePidController.setOutputRange(kMinOutput, kMaxOutput);
+        // set PID coefficients
+        m_drivePidController.setP(kP);
+        m_drivePidController.setI(kI);
+        m_drivePidController.setD(kD);
+        m_drivePidController.setIZone(kIz);
+        m_drivePidController.setFF(kFF);
+        m_drivePidController.setOutputRange(kMinOutput, kMaxOutput);
 
-        // int smartMotionSlot = 0;
-        // m_drivePidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-        // m_drivePidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-        // m_drivePidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-        // m_drivePidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+        int smartMotionSlot = 0;
+        m_drivePidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+        m_drivePidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+        m_drivePidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+        m_drivePidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
 //************************************************************** */
 
@@ -163,26 +163,26 @@ public class SwerveModule {
     state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
     //System.out.println("Optimized State: " + state.toString());
     // Calculate the drive output from the drive PID controller.
-    final var driveOutput =
-        driveFeedforward.calculate(state.speedMetersPerSecond) +
-        m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
+    //final var driveOutput =
+    //    driveFeedforward.calculate(state.speedMetersPerSecond) +
+    //    m_drivePIDController.calculate(getDriveEncoderVelocityMeterPerSec(), state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getModuleAngleRadians(), state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(driveOutput);
+    //m_driveMotor.set(driveOutput);
     double motorRpm = getMotorRpmFromDriveVelocity(state.speedMetersPerSecond);
 
 //************ */
 
-    // if (Math.abs(state.speedMetersPerSecond)>0.05){
-    //     m_drivePidController.setReference(motorRpm, ControlType.kSmartVelocity);
-    //     //m_drivePidController.setReference(state.speedMetersPerSecond*0, ControlType.kSmartVelocity);
-    // }else{
-    //     m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
-    // }
+    if (Math.abs(state.speedMetersPerSecond)>0.07){
+        m_drivePidController.setReference(motorRpm, ControlType.kSmartVelocity);
+        //m_drivePidController.setReference(state.speedMetersPerSecond*0, ControlType.kSmartVelocity);
+    }else{
+        m_drivePidController.setReference(0, ControlType.kSmartVelocity); // adds deadband
+    }
 
   //**************************** */
     m_turningMotor.set(turnOutput);
