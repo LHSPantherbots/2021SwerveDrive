@@ -63,7 +63,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        new Rotation2d(getHeading()),
+        new Rotation2d(getHeadingRadians()),
         m_frontLeft.getState(),
         m_frontRight.getState(),
         m_rearLeft.getState(),
@@ -186,6 +186,10 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRotation2d().getDegrees();
   }
 
+
+  public double getHeadingRadians() {
+    return m_gyro.getRotation2d().getRadians();
+  }
   /**
    * Returns the turn rate of the robot.
    *

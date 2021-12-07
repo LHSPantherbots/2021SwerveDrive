@@ -160,7 +160,7 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState state) {
     //System.out.println("Original State: " + state.toString());
-    //state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
+    state = SwerveModuleState.optimize(state, new Rotation2d(getModuleAngleRadians()));
     //System.out.println("Optimized State: " + state.toString());
     // Calculate the drive output from the drive PID controller.
     final var driveOutput =
