@@ -90,6 +90,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    // Reset pose and endocers at start of teleopp
     m_robotContainer.m_robotDrive.resetEncoders();
     m_robotContainer.m_robotDrive.zeroHeading();
     m_robotContainer.m_robotDrive.resetOdometry(new Pose2d());

@@ -84,9 +84,6 @@ public class SwerveModule {
     this.m_driveEncoder = m_driveMotor.getEncoder();
 
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
-    //this.cancoderConfig = new CANCoderConfiguration();
-    //this.cancoderConfig.magnetOffsetDegrees= angleZero;
-    //this.m_turningEncoder.getAllConfigs(this.cancoderConfig);
     this.m_turningEncoder.configMagnetOffset(-angleZero);
 
 //*********************************************** */
